@@ -17,12 +17,20 @@ class Pembayaran extends Model
         'bukti_pembayaran',
         'status',
         'paid_at',
+        'midtrans_order_id',
+        'snap_token',
+        'transaction_id',
+        'transaction_status',
+        'payment_type',
+        'fraud_status',
+        'raw_response',
     ];
 
     protected function casts(): array
     {
         return [
             'paid_at' => 'datetime',
+            'raw_response' => 'array',
         ];
     }
 

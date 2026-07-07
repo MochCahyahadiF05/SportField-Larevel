@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
 use App\Models\Lapangan;
+use App\Models\Pembayaran;
+use App\Services\MidtransPaymentService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -28,7 +30,7 @@ class BookingController extends Controller
         ));
     }
 
-    public function store(Request $request, Lapangan $lapangan)
+    public function store(Request $request, Lapangan $lapangan, MidtransPaymentService $midtransPaymentService)
     {
         $validated = $request->validate([
             'tanggal' => ['required', 'date'],
@@ -54,7 +56,7 @@ class BookingController extends Controller
         $durasiJam = max(1, (int) ceil($durasiMenit / 60));
         $totalHarga = $durasiJam * $lapangan->harga_per_jam;
 
-        Booking::create([
+        $booking = Booking::create([
             'user_id' => $request->user()->id,
             'lapangan_id' => $lapangan->id,
             'tanggal' => $tanggal,
@@ -64,12 +66,26 @@ class BookingController extends Controller
             'status' => 'pending',
         ]);
 
+        $payment = Pembayaran::create([
+            'booking_id' => $booking->id,
+            'jumlah' => $totalHarga,
+            'status' => 'pending',
+        ]);
+
+        if ($midtransPaymentService->isConfigured()) {
+            try {
+                $payment->update([
+                    'midtrans_order_id' => $midtransPaymentService->makeOrderId($payment),
+                    'snap_token' => $midtransPaymentService->createSnapToken($booking, $payment),
+                ]);
+            } catch (\Throwable $throwable) {
+                report($throwable);
+            }
+        }
+
         return redirect()
-            ->route('customer.bookings.create', [
-                'lapangan' => $lapangan->id,
-                'tanggal' => $tanggal,
-            ])
-            ->with('success', 'Booking berhasil dibuat dan sedang menunggu konfirmasi.');
+            ->route('customer.payments.show', $booking)
+            ->with('success', 'Booking berhasil dibuat. Silakan selesaikan pembayaran melalui Midtrans.');
     }
 
     private function buildTimeSlots(Lapangan $lapangan, string $selectedDate): array

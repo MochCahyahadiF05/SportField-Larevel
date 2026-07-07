@@ -169,7 +169,6 @@
         document.addEventListener('DOMContentLoaded', function () {
             const timeSlots = @json($timeSlots);
             const closingTime = @json($jamTutupText);
-            const hasSuccessToast = @json(session()->has('success'));
             const hourlyPrice = {{ (int) $lapangan->harga_per_jam }};
             const dateInput = document.getElementById('tanggal');
             const startSelect = document.getElementById('jam_mulai');
@@ -273,12 +272,6 @@
 
             renderEndOptions();
             updateTotalHarga();
-
-            if (hasSuccessToast) {
-                setTimeout(function () {
-                    window.location.href = '{{ route('home') }}';
-                }, 2500);
-            }
         });
     </script>
 </body>

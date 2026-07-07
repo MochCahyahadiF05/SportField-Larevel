@@ -34,7 +34,7 @@
                     <span class="ml-3">Dashboard</span>
                 </a>
             </li>
-            {{-- <li class="mb-2">
+            <li class="mb-2">
                 <a href="{{ route('admin.booking.index') }}"
                    class="flex items-center p-3 rounded-lg font-medium transition relative
                           {{ request()->routeIs('admin.booking.*')
@@ -48,7 +48,7 @@
                         </span>
                     @endif
                 </a>
-            </li>--}}
+            </li>
             <li class="mb-2">
                 <a href="{{ route('admin.lapangan.index') }}"
                    class="flex items-center p-3 rounded-lg font-medium transition relative
@@ -89,7 +89,7 @@
                     <span class="ml-3">Pelanggan</span>
                 </a>
             </li> --}}
-            {{-- <li class="mb-2">
+            <li class="mb-2">
                 <a href="{{ route('admin.pembayaran.index') }}"
                    class="flex items-center p-3 rounded-lg font-medium transition relative
                           {{ request()->routeIs('admin.pembayaran.*')
@@ -98,7 +98,7 @@
                     <i class="fas fa-credit-card w-5 text-xl {{ request()->routeIs('admin.pembayaran.*') ? 'text-white' : 'text-gray-500' }}"></i>
                     <span class="ml-3">Pembayaran</span>
                 </a>
-            </li> --}}
+            </li>
             {{-- <li class="mb-2">
                 <a href="{{ route('admin.laporan.index') }}"
                    class="flex items-center p-3 rounded-lg font-medium transition relative
