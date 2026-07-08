@@ -28,11 +28,35 @@ class JenisOlahragaController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        JenisOlahraga::create($data);
+        $sudahAda = JenisOlahraga::whereRaw('LOWER(name) = ?', [strtolower($data['name'])])->exists();
 
-        return redirect()
-            ->route('admin.jenis-olahraga.index')
-            ->with('success', 'Jenis olahraga berhasil ditambahkan.');
+        if ($sudahAda) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Jenis olahraga dengan nama ini sudah ada.',
+                    'errors' => [
+                        'name' => ['Jenis olahraga dengan nama ini sudah ada.']
+                    ],
+                ], 422);
+            }
+
+            return redirect()->back()
+                ->withErrors([
+                    'name' => 'Jenis olahraga dengan nama ini sudah ada.'
+                ])
+                ->withInput();
+        }
+
+        $jenisOlahraga = JenisOlahraga::create($data);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id' => $jenisOlahraga->id,
+                'name' => $jenisOlahraga->name,
+            ], 201);
+        }
+
+        return redirect()->back()->with('success', 'Jenis olahraga berhasil ditambahkan.');
     }
 
     public function edit(JenisOlahraga $jenisOlahraga)

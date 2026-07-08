@@ -9,7 +9,7 @@
             </div>
 
             <ul class="nav-menu">
-                <li><a href="#home" class="active">Beranda</a></li>
+                <li><a href="{{ route('home') }}" class="active">Beranda</a></li>
                 <li><a href="#lapangan">Lapangan</a></li>
                 <li><a href="#kontak">Kontak</a></li>
             </ul>

@@ -21,6 +21,9 @@ class Lapangan extends Model
         'jam_buka',
         'jam_tutup',
         'status',
+        'alamat',
+        'latitude',
+        'longitude',
     ];
 
     protected function casts(): array

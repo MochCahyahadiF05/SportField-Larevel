@@ -46,6 +46,9 @@ class LapanganController extends Controller
         $data = $request->validate([
             'jenis_olahraga_id' => ['required', 'exists:jenis_olahragas,id'],
             'nama_lapangan' => ['required', 'string', 'max:255'],
+            'alamat' => ['required', 'string'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'harga_per_jam' => ['required', 'integer', 'min:0'],
             'deskripsi' => ['nullable', 'string'],
             'gambar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
@@ -87,6 +90,9 @@ class LapanganController extends Controller
         $data = $request->validate([
             'jenis_olahraga_id' => ['required', 'exists:jenis_olahragas,id'],
             'nama_lapangan' => ['required', 'string', 'max:255'],
+            'alamat' => ['required', 'string'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'harga_per_jam' => ['required', 'integer', 'min:0'],
             'deskripsi' => ['nullable', 'string'],
             'gambar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],

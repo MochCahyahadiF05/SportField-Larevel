@@ -52,14 +52,14 @@ class Booking extends Model
 
     /**
      * Cek apakah slot lapangan pada tanggal & rentang jam tertentu sudah bentrok
-     * dengan booking lain yang belum dibatalkan.
+     * dengan booking lain yang masih aktif (pending/confirmed).
      */
     public static function isBentrok(int $lapanganId, string $tanggal, string $jamMulai, string $jamSelesai, ?int $ignoreBookingId = null): bool
     {
         return static::query()
             ->where('lapangan_id', $lapanganId)
             ->where('tanggal', $tanggal)
-            ->where('status', '!=', 'cancelled')
+            ->whereIn('status', ['pending', 'confirmed'])
             ->when($ignoreBookingId, fn ($q) => $q->where('id', '!=', $ignoreBookingId))
             ->where('jam_mulai', '<', $jamSelesai)
             ->where('jam_selesai', '>', $jamMulai)

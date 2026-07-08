@@ -24,7 +24,7 @@
         {{-- Menu Items --}}
         {{-- CATATAN: sesuaikan nama route() di bawah dengan route asli kamu (routes/web.php) --}}
         <ul class="list-none mb-16">
-            <li class="mb-2">
+            {{-- <li class="mb-2">
                 <a href="{{ route('admin.dashboard') }}"
                    class="flex items-center p-3 rounded-lg font-medium transition relative
                           {{ request()->routeIs('admin.dashboard')
@@ -33,7 +33,7 @@
                     <i class="fas fa-home w-5 text-xl {{ request()->routeIs('admin.dashboard') ? 'text-white' : 'text-gray-500' }}"></i>
                     <span class="ml-3">Dashboard</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="mb-2">
                 <a href="{{ route('admin.booking.index') }}"
                    class="flex items-center p-3 rounded-lg font-medium transition relative

@@ -28,11 +28,35 @@ class FasilitasController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        Fasilitas::create($data);
+        $sudahAda = Fasilitas::whereRaw('LOWER(name) = ?', [strtolower($data['name'])])->exists();
 
-        return redirect()
-            ->route('admin.fasilitas.index')
-            ->with('success', 'Fasilitas berhasil ditambahkan.');
+        if ($sudahAda) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Fasilitas dengan nama ini sudah ada.',
+                    'errors' => [
+                        'name' => ['Fasilitas dengan nama ini sudah ada.']
+                    ],
+                ], 422);
+            }
+
+            return redirect()->back()
+                ->withErrors([
+                    'name' => 'Fasilitas dengan nama ini sudah ada.'
+                ])
+                ->withInput();
+        }
+
+        $fasilitas = Fasilitas::create($data);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'id' => $fasilitas->id,
+                'name' => $fasilitas->name,
+            ], 201);
+        }
+
+        return redirect()->back()->with('success', 'Fasilitas berhasil ditambahkan.');
     }
 
     public function edit(Fasilitas $fasilitas)
